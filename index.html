@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoiloAntiFiltering</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: "Open Sans", sans-serif;
+      color: #444;
+    }
+
+    a {
+      color: #1a8561;
+      text-decoration: none;
+      transition: all 200ms ease;
+    }
+
+    a:hover{
+      text-decoration: underline;
+    }
+
+    body {
+      margin: 0;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      height: 100vh;
+    }
+
+    main {
+      grid-row: 2;
+      background: #fffe;
+      transform: skewY(3deg);
+      transform-origin: top left;
+      box-shadow: 0 0 15px #0004;
+    }
+
+    main > div {
+      margin: 50px;
+      padding-bottom:10px;
+      transform: skewY(-3deg);
+    }
+
+    main > div h2{
+      font-weight: 300;
+      font-size: 32px;
+    }
+
+    header {
+      grid-row: 1;
+      padding: 40px;
+      margin: 0;
+    }
+
+    header>h1 {
+      font-weight: 200;
+      font-size: 40px;
+      letter-spacing: 2px;
+    }
+
+    header>p {
+      color: #fff9;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a8561 0%, #1a8599 75%) fixed;
+    }
+
+    header * {
+      color: #fff;
+    }
+
+    footer {
+      grid-row: 3;
+      padding: 20px;
+      margin-top:50px;
+    }
+
+
+    footer p {
+      margin: 0;
+      color: #fffe;
+    }
+
+    footer a{
+      color:#cfe;
+      filter: drop-shadow(0 0 1px #000a);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    li {
+      margin-bottom: 1em;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="https://gitlab.com/kasmide/loiloantifiltering/">
+    <link rel="stylesheet" href="https://kasmide.gitlab.io/fork_me_on_gitlab/style.css" />
+    <div id="gitlab_banner">
+      <img src="https://about.gitlab.com/images/press/logo/svg/gitlab-icon-1-color-black-rgb.svg" />
+      <p>Fork me on GitLab</p>
+    </div>
+  </a>
+  <header>
+    <h1 id="loiloantifiltering">LoiloAntiFiltering</h1>
+    <p>このアプリケーションを利用することで、ロイロノート・スクールの「Webカード」機能を使い、制限のない自由なインターネットにアクセスできます。</p>
+  </header>
+  <main>
+    <div>
+      <h2 id="設定方法">設定方法</h2>
+      <p><strong>警告</strong>: この手順を実施した場合、アプリの仕様によりログアウトされます。ユーザ名とパスワードが分からない場合は実施しないでください。</p>
+      <ol>
+        <li>「設定」アプリを開き、ロイロノート &gt; 接続先サーバー に移動する<br><img src="./assets/1.jpg" alt="" width="400" /></li>
+        <li>設定されている値を「<a href="https://n.loilo.tv/">https://n.loilo.tv/</a>」から「<a
+            href="https://loilo.herokuapp.com/">https://loilo.herokuapp.com/</a>」に変更する<br><img src="./assets/2.jpg"
+            alt="" width="400" /></li>
+        <li>アプリを開きログインする</li>
+      </ol>
+      <br>
+    </div>
+  </main>
+  <footer>
+    <p>このアプリケーションに関するより詳細な情報は GitLab の <a href="https://gitlab.com/kasmide/loiloantifiltering/-/wikis/home">Wiki</a> をご覧ください。</p>
+    <p>不具合の報告はこちら (GitLab.com への登録が必要です): <a
+        href="https://gitlab.com/kasmide/loiloantifiltering/issues/">LoiloAntiFiltering / Issues</a></p>
+  </footer>
+</body>
+
+</html>

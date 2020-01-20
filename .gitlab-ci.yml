@@ -1,0 +1,12 @@
+pages:
+  image: alpine:latest
+  stage: deploy
+  script:
+    - mv . .public
+    - mv .public public
+  artifacts:
+    paths:
+      - public
+  only:
+    changes:
+        - public/*
