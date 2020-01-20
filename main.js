@@ -1,8 +1,14 @@
 const loiloAPIserver = "https://n.loilo.tv" //Change this if the server is on premise
+let port = 3000
 
 const http = require("http");
 const url = require("url");
 const request = require("request");
+if (!isNaN(process.argv[2])) {
+  port = Number(process.argv[2])
+} else {
+  console.error("The given port number is not valid");
+}
 http.createServer(function (req, res) {
   realHost = req.headers.host
   req.headers.host = url.parse(loiloAPIserver).host
@@ -11,7 +17,7 @@ http.createServer(function (req, res) {
     if (url.parse(req.url).pathname.indexOf("/api") != -1) {
       switch (url.parse(req.url).pathname.substring(url.parse(req.url).pathname.indexOf("/api"))) {
         case "/api/web_filtering":
-          var sender = setInterval(function () { res.write("hello world ")}, 10000)
+          var sender = setInterval(function () { res.write("hello world ") }, 10000)
           setTimeout(function () {
             clearInterval(sender);
           }, 3600000)
@@ -38,4 +44,5 @@ http.createServer(function (req, res) {
     }
     )
   }
-}).listen(3000); 
+}).listen(port);
+console.log("Listen on 0.0.0.0:" + port);
