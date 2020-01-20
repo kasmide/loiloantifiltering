@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>How to use this proxy</title>
+    <style>
+        * {
+            font-family: sans-serif;
+            font-family: 300;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 300;
+            margin-bottom: 60px;
+            grid-row: 1;
+        }
+
+        h2 {
+            font-weight: 300;
+        }
+
+        body {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 60px);
+        }
+
+        a {
+            color: #27e;
+        }
+
+        main {
+            grid-row: 2;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+    <h1>LoiloNote School Proxy with anti web filtering</h1>
+        <p>This app is in development. Some features may not work, Please use at your own risk.</p>
+        <h2>How to use</h2>
+        <p><b>Warning:</b> You will be logged out during the step! Remember your username and password.</p>
+        <ol>
+            <li>Open Settings App and then go <b>LoiloNote School > Server URL</b></li>
+            <li id="address">Set the server address to</li>
+            <li> Done! Open LoiloNote App and login.</li>
+        </ol>
+        <script>
+            document.getElementById("address").innerHTML += " <a href=\"" + location.href + "\">" + location.href + "</a>"
+        </script>
+    </main>
+</body>
+
+</html>
