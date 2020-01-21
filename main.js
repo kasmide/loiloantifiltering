@@ -38,11 +38,16 @@ http.createServer(function (req, res) {
     req.on('data', function (chunk) {
       data.push(chunk);
     })
-    req.on('end', function () {
-      console.log("POST: " + requestURL)
-      request({ url: requestURL, method: "POST", body: Buffer.concat(data), headers: req.headers }).pipe(res);
+    if (req.url != "/api/web_card/browsing_status") {
+      req.on('end', function () {
+        console.log("POST: " + requestURL)
+        request({ url: requestURL, method: "POST", body: Buffer.concat(data), headers: req.headers }).pipe(res);
+      }
+      )
+    } else {
+      console.log(req.url);
+      res.end("{}")
     }
-    )
   }
 }).listen(port);
 console.log("Listen on 0.0.0.0:" + port);
