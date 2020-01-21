@@ -13,7 +13,20 @@ http.createServer(function (req, res) {
   realHost = req.headers.host
   req.headers.host = url.parse(loiloAPIserver).host
   const requestURL = loiloAPIserver + url.parse(req.url).path.substring(url.parse(req.url).pathname.indexOf("/api"));
-  if (req.method === 'GET') {
+  if (req.method === "POST") {
+    const data = [];
+    req.on('data', function (chunk) {
+      data.push(chunk);
+    })
+    if (req.url != "/api/web_card/browsing_status") {
+      req.on('end', function () {
+        request({ url: requestURL, method: "POST", body: Buffer.concat(data), headers: req.headers }).pipe(res);
+      }
+      )
+    } else {
+      res.end("{}")
+    }
+  } else {
     if (url.parse(req.url).pathname.indexOf("/api") != -1) {
       switch (url.parse(req.url).pathname.substring(url.parse(req.url).pathname.indexOf("/api"))) {
         case "/api/web_filtering":
@@ -26,28 +39,13 @@ http.createServer(function (req, res) {
           });
           return;
         default:
-          console.log("GET: " + requestURL)
-          request({ url: requestURL, method: "GET", headers: req.headers }).pipe(res);
+          request({ url: requestURL, method: req.method, headers: req.headers }).pipe(res);
           return;
       }
     } else {
       res.end(require('fs').readFileSync('howToUse.html'));
     }
-  } else if (req.method === "POST") {
-    const data = [];
-    req.on('data', function (chunk) {
-      data.push(chunk);
-    })
-    if (req.url != "/api/web_card/browsing_status") {
-      req.on('end', function () {
-        console.log("POST: " + requestURL)
-        request({ url: requestURL, method: "POST", body: Buffer.concat(data), headers: req.headers }).pipe(res);
-      }
-      )
-    } else {
-      console.log(req.url);
-      res.end("{}")
-    }
   }
+  console.log(req.method + " " + requestURL)
 }).listen(port);
 console.log("Listen on 0.0.0.0:" + port);
