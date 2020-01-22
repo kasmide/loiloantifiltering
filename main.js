@@ -9,6 +9,7 @@ if (!isNaN(process.argv[2])) {
 } else {
   console.error("The given port number is not valid");
 }
+
 http.createServer(function (req, res) {
   realHost = req.headers.host
   req.headers.host = url.parse(loiloAPIserver).host
@@ -18,14 +19,14 @@ http.createServer(function (req, res) {
     req.on('data', function (chunk) {
       data.push(chunk);
     })
-    if (req.url != "/api/web_card/browsing_status") {
-      req.on('end', function () {
+    req.on('end', function () {
+      if (req.url != "/api/web_card/browsing_status") {
         request({ url: requestURL, method: "POST", body: Buffer.concat(data), headers: req.headers }).pipe(res);
+      } else {
+        res.end("{}")
       }
-      )
-    } else {
-      res.end("{}")
     }
+    )
   } else {
     if (url.parse(req.url).pathname.indexOf("/api") != -1) {
       switch (url.parse(req.url).pathname.substring(url.parse(req.url).pathname.indexOf("/api"))) {
@@ -43,7 +44,7 @@ http.createServer(function (req, res) {
           return;
       }
     } else {
-      res.end(require('fs').readFileSync('howToUse.html'));
+      res.end(require('fs').readFileSync('docs/index.html'));
     }
   }
   console.log(req.method + " " + requestURL)
