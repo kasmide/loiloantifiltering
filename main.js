@@ -4,6 +4,7 @@ let port = 3000
 const http = require("http");
 const url = require("url");
 const request = require("request");
+let blockedAccounts = new Object();
 if (!isNaN(process.argv[2])) {
   port = Number(process.argv[2])
 } else {
@@ -20,10 +21,39 @@ http.createServer(function (req, res) {
       data.push(chunk);
     })
     req.on('end', function () {
-      if (req.url != "/api/web_card/browsing_status") {
-        request({ url: requestURL, method: "POST", body: Buffer.concat(data), headers: req.headers }).pipe(res);
-      } else {
+      if (requestURL == loiloAPIserver + "/api/web_card/browsing_status") {
         res.end("{}")
+      } else if (requestURL == loiloAPIserver + "/api/tokens") {
+        const usernameArray = String(Buffer.concat(data)).match(/user=.[^&]*/g);
+        const username = usernameArray[usernameArray.length - 1].substring(5);
+        if (!blockedAccounts[username] || new Date().getTime() - blockedAccounts[username]["time"] >= 3600000 || !blockedAccounts[username]["blocked"]) {
+          request({ url: requestURL, method: "POST", body: Buffer.concat(data), headers: req.headers }, function (error, response, body) {
+            if (response.statusCode != 200) {
+              if (!blockedAccounts[username]) {
+                blockedAccounts[username] = {};
+                blockedAccounts[username]["failCount"] = 1;
+                blockedAccounts[username]["time"] = new Date().getTime();
+              } else {
+                if (new Date().getTime() - blockedAccounts[username]["time"] >= 3600000) {
+                  blockedAccounts[username]["failCount"] = 1;
+                  blockedAccounts[username]["time"] = new Date().getTime();
+                  delete blockedAccounts[username]["blocked"]
+                } else {
+                  blockedAccounts[username]["failCount"]++;
+                  if (blockedAccounts[username]["failCount"] >= 10) {
+                    blockedAccounts[username]["blocked"] = true;
+                    blockedAccounts[username]["time"] = new Date().getTime();
+                  }
+                }
+              }
+            }
+          }).pipe(res)
+        } else {
+          res.writeHead(401);
+          res.end("{\"status\":401}")
+        }
+      } else {
+        request({ url: requestURL, method: "POST", body: Buffer.concat(data), headers: req.headers }).pipe(res);
       }
     }
     )
