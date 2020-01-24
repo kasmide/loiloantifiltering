@@ -5,10 +5,12 @@ const http = require("http");
 const url = require("url");
 const request = require("request");
 let blockedAccounts = new Object();
-if (!isNaN(process.argv[2])) {
-  port = Number(process.argv[2])
-} else {
-  console.error("The given port number is not valid");
+if (process.argv[2]) {
+  if (!isNaN(process.argv[2])) {
+    port = Number(process.argv[2])
+  } else {
+    console.error("The given port number is not valid");
+  }
 }
 
 http.createServer(function (req, res) {
