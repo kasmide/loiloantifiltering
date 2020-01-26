@@ -17,6 +17,7 @@ http.createServer(function (req, res) {
   realHost = req.headers.host
   req.headers.host = url.parse(loiloAPIserver).host
   const requestURL = loiloAPIserver + url.parse(req.url).path.substring(url.parse(req.url).pathname.indexOf("/api"));
+  console.log(req.method + " " + requestURL)
   if (req.method === "POST") {
     const data = [];
     req.on('data', function (chunk) {
@@ -60,7 +61,7 @@ http.createServer(function (req, res) {
     }
     )
   } else {
-    if (url.parse(req.url).pathname.indexOf("/api") != -1) {
+    if (url.parse(req.url).pathname.indexOf("/api") != -1 || url.parse(req.url).pathname == "/notification") {
       switch (url.parse(req.url).pathname.substring(url.parse(req.url).pathname.indexOf("/api"))) {
         case "/api/web_filtering":
           var sender = setInterval(function () { res.write("hello world ") }, 10000)
@@ -79,6 +80,5 @@ http.createServer(function (req, res) {
       res.end(require('fs').readFileSync('docs/index.html'));
     }
   }
-  console.log(req.method + " " + requestURL)
 }).listen(port);
 console.log("Listen on 0.0.0.0:" + port);
