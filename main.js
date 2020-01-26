@@ -61,7 +61,7 @@ http.createServer(function (req, res) {
     }
     )
   } else {
-    if (url.parse(req.url).pathname.indexOf("/api") != -1 || url.parse(req.url).pathname == "/notification") {
+    if (url.parse(req.url).pathname.indexOf("/api") != -1) {
       switch (url.parse(req.url).pathname.substring(url.parse(req.url).pathname.indexOf("/api"))) {
         case "/api/web_filtering":
           var sender = setInterval(function () { res.write("hello world ") }, 10000)
@@ -76,6 +76,8 @@ http.createServer(function (req, res) {
           request({ url: requestURL, method: req.method, headers: req.headers }).pipe(res);
           return;
       }
+    } else if (url.parse(req.url).pathname.indexOf("/notification")!=-1) {
+      request({ url: loiloAPIserver+"/notification", method: req.method, headers: req.headers }).pipe(res);
     } else {
       res.end(require('fs').readFileSync('docs/index.html'));
     }
