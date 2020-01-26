@@ -13,7 +13,6 @@
             text-align: center;
             font-weight: 300;
             margin-bottom: 60px;
-            grid-row: 1;
         }
 
         h2 {
@@ -22,11 +21,12 @@
 
         body {
             padding: 30px;
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-rows: 1fr auto;
             justify-content: center;
             align-items: center;
             height: calc(100vh - 60px);
+            margin: 0;
         }
 
         a {
@@ -34,18 +34,22 @@
         }
 
         main {
-            grid-row: 2;
+            grid-row: 1;
             margin: auto;
+        }
+
+        footer {
+            grid-row: 2;
         }
     </style>
 </head>
 
 <body>
     <main>
-    <h1>LoiloNote School Proxy with anti web filtering</h1>
-        <p>This app is in development. Some features may not work, Please use at your own risk.</p>
+        <h1>LoiloNote School Proxy with anti web filtering</h1>
+        <p>This app is in development. Please use at your own risk.</p>
         <h2>How to use</h2>
-        <p><b>Warning:</b> You will be logged out during the step! Remember your username and password.</p>
+        <p><b>Warning:</b> You will be logged out during the step.</p>
         <ol>
             <li>Open Settings App and then go <b>LoiloNote School > Server URL</b></li>
             <li id="address">Set the server address to</li>
@@ -55,6 +59,9 @@
             document.getElementById("address").innerHTML += " <a href=\"" + location.href + "\">" + location.href + "</a>"
         </script>
     </main>
+    <footer>
+        <a href="https://gitlab.com/kasmide/loiloantifiltering/">Fork me on GitLab</a>
+    </footer>
 </body>
 
 </html>
