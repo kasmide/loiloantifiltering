@@ -1,0 +1,7 @@
+stages:
+    - deploy
+heroku:
+    stage: deploy
+    script:
+        - gem install dpl
+        - dpl --provider=heroku --app=loilo --api-key=$HEROKU_API_KEY
