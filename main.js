@@ -18,69 +18,62 @@ http.createServer(function (req, res) {
   req.headers.host = url.parse(loiloAPIserver).host
   const requestURL = loiloAPIserver + url.parse(req.url).path.substring(url.parse(req.url).pathname.indexOf("/api"));
   console.log(req.method + " " + requestURL)
-  if (req.method === "POST") {
-    const data = [];
-    req.on('data', function (chunk) {
-      data.push(chunk);
-    })
-    req.on('end', function () {
-      if (requestURL == loiloAPIserver + "/api/web_card/browsing_status") {
-        res.end("{}")
-      } else if (requestURL == loiloAPIserver + "/api/tokens") {
+  const data = [];
+  req.on('data', function (chunk) {
+    data.push(chunk);
+  })
+  req.on('end', function () {
+    switch (url.parse(requestURL).pathname) {
+      case "/api/web_filtering":
+        var sender = setInterval(function () { res.write("hello world ") }, 10000)
+        setTimeout(function () {
+          clearInterval(sender);
+        }, 3600000)
+        res.on("close", function () {
+          clearInterval(sender);
+        });
+        return;
+      case "/api/web_card/browsing_status":
+        res.end("{}");
+        return;
+      case "/api/tokens":
         const usernameArray = String(Buffer.concat(data)).match(/user=.[^&]*/g);
-        const username = usernameArray[usernameArray.length - 1].substring(5);
-        if (!blockedAccounts[username] || new Date().getTime() - blockedAccounts[username]["time"] >= 3600000 || !blockedAccounts[username]["blocked"]) {
-          request({ url: requestURL, method: "POST", body: Buffer.concat(data), headers: req.headers }, function (error, response, body) {
-            if (response.statusCode != 200) {
-              if (!blockedAccounts[username]) {
-                blockedAccounts[username] = {};
-                blockedAccounts[username]["failCount"] = 1;
-                blockedAccounts[username]["time"] = new Date().getTime();
-              } else {
-                if (new Date().getTime() - blockedAccounts[username]["time"] >= 3600000) {
+        if (usernameArray) {
+          const username = usernameArray[usernameArray.length - 1].substring(5);
+          if (!blockedAccounts[username] || new Date().getTime() - blockedAccounts[username]["time"] >= 3600000 || !blockedAccounts[username]["blocked"]) {
+            request({ url: requestURL, method: req.method, body: Buffer.concat(data), headers: req.headers, encoding: null }, function (error, response, body) {
+              if (response.statusCode != 200) {
+                if (!blockedAccounts[username]) {
+                  blockedAccounts[username] = {};
                   blockedAccounts[username]["failCount"] = 1;
                   blockedAccounts[username]["time"] = new Date().getTime();
-                  delete blockedAccounts[username]["blocked"]
                 } else {
-                  blockedAccounts[username]["failCount"]++;
-                  if (blockedAccounts[username]["failCount"] >= 10) {
-                    blockedAccounts[username]["blocked"] = true;
+                  if (new Date().getTime() - blockedAccounts[username]["time"] >= 3600000) {
+                    blockedAccounts[username]["failCount"] = 1;
                     blockedAccounts[username]["time"] = new Date().getTime();
+                    delete blockedAccounts[username]["blocked"]
+                  } else {
+                    blockedAccounts[username]["failCount"]++;
+                    if (blockedAccounts[username]["failCount"] >= 10) {
+                      blockedAccounts[username]["blocked"] = true;
+                      blockedAccounts[username]["time"] = new Date().getTime();
+                    }
                   }
                 }
               }
-            }
-          }).pipe(res)
-        } else {
-          res.writeHead(401);
-          res.end("{\"status\":401}")
+            }).pipe(res)
+          } else {
+            res.writeHead(401);
+            res.end("{\"status\":401}")
+          }
+          return;
         }
-      } else {
-        request({ url: requestURL, method: "POST", body: Buffer.concat(data), headers: req.headers }).pipe(res);
-      }
-    }
-    )
-  } else {
-    if (url.parse(req.url).pathname.indexOf("/api") != -1) {
-      switch (url.parse(req.url).pathname.substring(url.parse(req.url).pathname.indexOf("/api"))) {
-        case "/api/web_filtering":
-          var sender = setInterval(function () { res.write("hello world ") }, 10000)
-          setTimeout(function () {
-            clearInterval(sender);
-          }, 3600000)
-          res.on("close", function () {
-            clearInterval(sender);
-          });
-          return;
-        default:
-          request({ url: requestURL, method: req.method, headers: req.headers }).pipe(res);
-          return;
-      }
-    } else if (url.parse(req.url).pathname.indexOf("/notification")!=-1) {
-      request({ url: loiloAPIserver+"/notification", method: req.method, headers: req.headers }).pipe(res);
-    } else {
-      res.end(require('fs').readFileSync('docs/index.html'));
+      default:
+        if (data.length != 0) request({ url: requestURL, method: req.method, body: Buffer.concat(data), headers: req.headers }).pipe(res);
+        else request({ url: requestURL, method: req.method, headers: req.headers }).pipe(res);
+        return;
     }
   }
+  )
 }).listen(port);
 console.log("Listen on 0.0.0.0:" + port);
