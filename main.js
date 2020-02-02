@@ -25,13 +25,7 @@ http.createServer(function (req, res) {
   req.on('end', function () {
     switch (url.parse(requestURL).pathname) {
       case "/api/web_filtering":
-        var sender = setInterval(function () { res.write("hello world ") }, 10000)
-        setTimeout(function () {
-          clearInterval(sender);
-        }, 3600000)
-        res.on("close", function () {
-          clearInterval(sender);
-        });
+        res.end('{"type":"none"}')
         return;
       case "/api/web_card/browsing_status":
         res.end("{}");
