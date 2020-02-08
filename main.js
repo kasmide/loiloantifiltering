@@ -66,6 +66,7 @@ http.createServer(function (req, res) {
         res.writeHead(301, {
           "Location": requestURL
         })
+        res.end();
         return;
     }
   }
