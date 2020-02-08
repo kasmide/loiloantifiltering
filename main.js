@@ -63,8 +63,9 @@ http.createServer(function (req, res) {
           return;
         }
       default:
-        if (data.length != 0) request({ url: requestURL, method: req.method, body: Buffer.concat(data), headers: req.headers }).pipe(res);
-        else request({ url: requestURL, method: req.method, headers: req.headers }).pipe(res);
+        res.writeHead(301, {
+          "Location": requestURL
+        })
         return;
     }
   }
