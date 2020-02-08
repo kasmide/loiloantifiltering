@@ -63,7 +63,7 @@ http.createServer(function (req, res) {
           return;
         }
       default:
-        res.writeHead(301, {
+        res.writeHead(308, {
           "Location": requestURL
         })
         res.end();
