@@ -13,18 +13,22 @@ if (process.argv[2]) {
 
 http.createServer(function (req, res) {
   const requestURL = loiloAPIserver + url.parse(req.url).path.substring(url.parse(req.url).pathname.indexOf("/api"));
-  console.log("%s %s",req.method,requestURL)
-  switch (url.parse(requestURL).pathname) {
-    case "/api/web_filtering":
-      res.end('{"type":"none"}')
-      break;
-    case "/api/web_card/browsing_status":
-      res.end("{}");
-      break;
-    default:
-      res.writeHead(308, {"Location": requestURL})
-      res.end();
-      break;
-  }
+  req.on("data", function () {
+  })
+  req.on('end', function () {
+    console.log("%s %s", req.method, requestURL)
+    switch (url.parse(requestURL).pathname) {
+      case "/api/web_filtering":
+        res.end('{"type":"none"}')
+        break;
+      case "/api/web_card/browsing_status":
+        res.end("{}");
+        break;
+      default:
+        res.writeHead(308, { "Location": requestURL })
+        res.end();
+        break;
+    }
+  })
 }).listen(port);
 console.log("Listen on 0.0.0.0:" + port);
