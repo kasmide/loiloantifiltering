@@ -4,12 +4,11 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js --require dotenv/config"
+    "start": "node main.js"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "dotenv": "^8.2.0",
     "request": "^2.88.0"
   }
 }
