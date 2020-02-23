@@ -18,6 +18,10 @@ http.createServer(function (req, res) {
   req.on('end', function () {
     console.log("%s %s", req.method, requestURL)
     switch (url.parse(requestURL).pathname) {
+      case "/":
+        res.writeHead(302, { "Location": "https://gitlab.com/kasmide/loiloantifiltering/-/wikis/home" });
+        res.end();
+        break;
       case "/api/web_filtering":
         res.end('{"type":"none"}')
         break;
