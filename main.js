@@ -19,7 +19,11 @@ http.createServer(function (req, res) {
     console.log("%s %s", req.method, requestURL)
     switch (url.parse(requestURL).pathname) {
       case "/":
-        res.writeHead(302, { "Location": "https://gitlab.com/kasmide/loiloantifiltering/-/wikis/home" });
+        res.writeHead(302, {
+          "Location": "https://gitlab.com/kasmide/loiloantifiltering/-/wikis/home",
+          "Cache-Control": "max-age=31536000",
+          "Strict-Transport-Security": "max-age=31536000"
+        });
         res.end();
         break;
       case "/api/web_filtering":
@@ -29,7 +33,11 @@ http.createServer(function (req, res) {
         res.end("{}");
         break;
       default:
-        res.writeHead(308, { "Location": requestURL })
+        res.writeHead(308, {
+          "Location": requestURL,
+          "Cache-Control": "max-age=31536000",
+          "Strict-Transport-Security": "max-age=31536000"
+        })
         res.end();
         break;
     }
