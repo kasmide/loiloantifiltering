@@ -14,6 +14,11 @@
     a {
       color: #1a8561;
       text-decoration: none;
+      transition: all 200ms ease;
+    }
+
+    a:hover{
+      text-decoration: underline;
     }
 
     body {
@@ -25,28 +30,37 @@
 
     main {
       grid-row: 2;
-    }
-
-    main>div{
-      margin: 50px;
-    }
-
-    main:before {
-      content: "";
-      padding: 0;
-      margin: 0;
       background: #fffe;
-      transform: skewY(-2deg);
-      height: calc(100% + 80px);
-      width: 100%;
-      z-index: -1;
-      position: absolute;
+      transform: skewY(3deg);
+      transform-origin: top left;
+      box-shadow: 0 0 15px #0004;
+    }
+
+    main > div {
+      margin: 50px;
+      padding-bottom:10px;
+      transform: skewY(-3deg);
+    }
+
+    main > div h2{
+      font-weight: 300;
+      font-size: 32px;
     }
 
     header {
       grid-row: 1;
       padding: 40px;
       margin: 0;
+    }
+
+    header>h1 {
+      font-weight: 200;
+      font-size: 40px;
+      letter-spacing: 2px;
+    }
+
+    header>p {
+      color: #fff9;
     }
 
     body {
@@ -60,13 +74,18 @@
     footer {
       grid-row: 3;
       padding: 20px;
-      background: #fffe;
-      border-radius: -4px;
+      margin-top:50px;
     }
-    
+
 
     footer p {
       margin: 0;
+      color: #fffe;
+    }
+
+    footer a{
+      color:#cfe;
+      filter: drop-shadow(0 0 1px #000a);
     }
 
     h2 {
@@ -102,6 +121,8 @@
           transition: all 200ms ease;
           border-radius: 4px;
           overflow: hidden;
+          z-index: 1;
+          box-shadow: 0 0 10px #0004;
         }
 
         #gitlab_banner:hover {
@@ -110,7 +131,7 @@
         }
 
         #gitlab_banner p {
-          color: #fff;
+          color: #fffd;
           font-weight: bold;
           font-size: 15px;
           text-align: center;
@@ -136,19 +157,18 @@
       <ol>
         <li>「設定」アプリを開き、ロイロノート &gt; 接続先サーバー に移動する<br><img src="./assets/1.jpg" alt="" width="400" /></li>
         <li>設定されている値を「<a href="https://n.loilo.tv/">https://n.loilo.tv/</a>」から「<a
-          href="https://loilo.herokuapp.com/">https://loilo.herokuapp.com/</a>」に変更する<br><img src="./assets/2.jpg"
-          alt="" width="400" /></li>
-          <li>アプリを開きログインする</li>
-        </ol>
-      </div>
-    </main>
-    <footer>
-      <p>このアプリケーションに関する詳細な情報は GitLab の <a href="https://gitlab.com/kasmide/loiloantifiltering/-/wikis/home">Wiki</a> をご覧ください。</p><br>
-      <p>このアプリケーションは <a href="https://opensource.org/licenses/Apache-2.0">Apache License 2.0</a>
-        でライセンスされたフリーソフトウェアです。<br>ソースコードはこちら: <a
-        href="https://gitlab.com/kasmide/loiloantifiltering">LoiloAntiFiltering</a><br>
-        不具合の報告はこちら (GitLab.com への登録が必要です): <a href="https://gitlab.com/kasmide/loiloantifiltering/issues/">LoiloAntiFiltering / Issues</a></p>
-      </footer>
+            href="https://loilo.herokuapp.com/">https://loilo.herokuapp.com/</a>」に変更する<br><img src="./assets/2.jpg"
+            alt="" width="400" /></li>
+        <li>アプリを開きログインする</li>
+      </ol>
+      <br>
+    </div>
+  </main>
+  <footer>
+    <p>このアプリケーションに関するより詳細な情報は GitLab の <a href="https://gitlab.com/kasmide/loiloantifiltering/-/wikis/home">Wiki</a> をご覧ください。</p>
+    <p>不具合の報告はこちら (GitLab.com への登録が必要です): <a
+        href="https://gitlab.com/kasmide/loiloantifiltering/issues/">LoiloAntiFiltering / Issues</a></p>
+  </footer>
 </body>
 
 </html>
