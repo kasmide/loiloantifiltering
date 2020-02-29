@@ -7,3 +7,13 @@ heroku:
         - dpl --provider=heroku --app=loilo --api-key=$HEROKU_API_KEY
     only:
         - tags
+
+pages:
+  stage: deploy
+  script:
+    - mv pages public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
