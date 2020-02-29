@@ -20,7 +20,7 @@ http.createServer(function (req, res) {
     switch (url.parse(requestURL).pathname) {
       case "/":
         res.writeHead(302, {
-          "Location": "https://gitlab.com/kasmide/loiloantifiltering/-/wikis/home",
+          "Location": "https://kasmide.gitlab.io/loiloantifiltering/",
           "Cache-Control": "max-age=31536000",
           "Strict-Transport-Security": "max-age=31536000"
         });
