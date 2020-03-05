@@ -9,12 +9,13 @@ heroku:
         - tags
         - web
 pages:
+  image: alpine:latest
   stage: deploy
   script:
-    - mv pages public
+    - ":"
   artifacts:
     paths:
       - public
   only:
     changes:
-        - pages/*
+        - public/*
