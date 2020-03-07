@@ -3,4 +3,4 @@ WORKDIR /usr/src/loiloantifiltering/
 COPY package*.json ./
 RUN npm i
 COPY . .
-CMD npm start $PORT
+ENTRYPOINT ["npm", "start", "$PORT"]
