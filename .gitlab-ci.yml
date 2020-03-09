@@ -2,6 +2,7 @@ stages:
     - build
     - deploy
 heroku:
+    image: ruby:latest
     stage: deploy
     script:
         - gem install dpl
