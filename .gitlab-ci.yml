@@ -2,8 +2,8 @@ pages:
   image: alpine:latest
   stage: deploy
   script:
-    - mv . .public
-    - mv .public public
+    - mkdir public
+    - ": `mv * public`" 
   artifacts:
     paths:
       - public
