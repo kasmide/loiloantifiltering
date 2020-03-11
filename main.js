@@ -1,13 +1,26 @@
 const loiloAPIserver = "https://n.loilo.tv" //Change this if the server is on premise
 let port = 3000
+let isDebug = false;
 
 const http = require("http");
 const url = require("url");
-if (process.argv[2]) {
-  if (!isNaN(process.argv[2])) {
-    port = Number(process.argv[2])
-  } else {
-    console.error("The given port number is not valid");
+for (i = 2; process.argv.length > i; i++) {
+  switch (process.argv[i]) {
+    case "--port":
+    case "-p":
+      i++
+      if (!isNaN(process.argv[i])) {
+        port = Number(process.argv[i])
+      } else {
+        console.error("The given port number is not valid");
+      }
+      break;
+    case "--debug":
+      isDebug = true;
+      console.log("Debug mode enabled")
+      break;
+    default:
+      console.error("Unkown parameter: %s", process.argv[i])
   }
 }
 
@@ -16,7 +29,7 @@ http.createServer(function (req, res) {
   req.on("data", function () {
   })
   req.on('end', function () {
-    console.log("%s %s", req.method, requestURL)
+    if (isDebug) console.log("%s %s", req.method, requestURL)
     switch (url.parse(requestURL).pathname) {
       case "/":
         res.writeHead(302, {
