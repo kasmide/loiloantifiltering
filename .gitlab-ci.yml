@@ -7,6 +7,3 @@ pages:
   artifacts:
     paths:
       - public
-  only:
-    changes:
-        - public/*
