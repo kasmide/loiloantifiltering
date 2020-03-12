@@ -18,15 +18,22 @@ test:
       when: always
 
 heroku:
-    image: ruby:latest
-    stage: deploy
-    script:
-        - gem install dpl
-        - dpl --provider=heroku --app=loilo --api-key=$HEROKU_API_KEY
-        - "[ $(curl loilo.herokuapp.com/api -w \"%{http_code}\") -lt \"500\" ]"
-    rules:
-        - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+.*$/
-          when: manual
+  image: alpine:latest
+  stage: deploy
+  before_script:
+    - apk add jq curl
+  script:
+    - export CONTAINER_ID=$(curl -u ":$HEROKU_API_KEY" "https://registry.heroku.com/v2/loilo/web/manifests/$CI_COMMIT_TAG" -H "Accept":" application/vnd.docker.distribution.manifest.v2+json"|jq -r ".config.digest")
+    - echo Deploying $CONTAINER_ID
+    - "curl -X PATCH https://api.heroku.com/apps/loilo/formation -d 
+    '{\"updates\": [{\"type\": \"web\",\"docker_image\":\"'$CONTAINER_ID'\"}]}'
+    -H \"Content-Type: application/json\"
+    -H \"Accept: application/vnd.heroku+json; version=3.docker-releases\"
+    -H \"Authorization: Bearer $HEROKU_API_KEY\""
+    - "[ $(curl loilo.herokuapp.com/api -w \"%{http_code}\") -lt \"500\" ]"
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+.*$/
+      when: manual
 
 docker:
   image: docker:latest
@@ -41,6 +48,8 @@ docker:
     - docker push ${CI_REGISTRY_IMAGE}:latest
     - docker tag ${CONTAINER_ID} ${CI_REGISTRY_IMAGE}:$CI_COMMIT_TAG
     - docker push ${CI_REGISTRY_IMAGE}:$CI_COMMIT_TAG
+    - docker tag ${CONTAINER_ID}:$CI_COMMIT_TAG
+    - docker push ${CONTAINER_ID}:$CI_COMMIT_TAG
   rules:
     - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+.*$/
       when: always
