@@ -7,4 +7,4 @@
 1.     $ git clone https://gitlab.com/kasmide/loiloantifiltering && cd loiloantifiltering
 1.     $ npm i
 ## Usage
-    node main.js [port number(3000)]
+    npm start -- -p [port number]
