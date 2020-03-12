@@ -48,8 +48,8 @@ docker:
     - docker push ${CI_REGISTRY_IMAGE}:latest
     - docker tag ${CONTAINER_ID} ${CI_REGISTRY_IMAGE}:$CI_COMMIT_TAG
     - docker push ${CI_REGISTRY_IMAGE}:$CI_COMMIT_TAG
-    - docker tag ${CONTAINER_ID}:$CI_COMMIT_TAG
-    - docker push ${CONTAINER_ID}:$CI_COMMIT_TAG
+    - docker tag ${CONTAINER_ID} registry.heroku.com/$HEROKU_APPNAME/web:$CI_COMMIT_TAG
+    - docker push ${CONTAINER_ID} registry.heroku.com/$HEROKU_APPNAME/web:$CI_COMMIT_TAG
   rules:
     - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+.*$/
       when: always
