@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:slim
 WORKDIR /usr/src/loiloantifiltering/
 COPY package*.json ./
 RUN npm i
