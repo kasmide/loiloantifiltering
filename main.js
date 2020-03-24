@@ -26,8 +26,6 @@ for (i = 2; process.argv.length > i; i++) {
 
 http.createServer(function (req, res) {
   const requestURL = loiloAPIserver + url.parse(req.url).path.substring(url.parse(req.url).pathname.indexOf("/api"));
-  req.on("data", function () {
-  })
   req.on('end', function () {
     if (isDebug) console.log("%s %s", req.method, requestURL)
     switch (url.parse(requestURL).pathname) {
