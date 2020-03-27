@@ -1,0 +1,175 @@
+* {
+  font-family: "Open Sans", sans-serif;
+  color: #444;
+}
+
+a {
+  color: #1a8561;
+  text-decoration: none;
+  transition: all 200ms ease;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+body {
+  margin: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+}
+
+main {
+  grid-row: 2;
+  background: #fffe;
+  transform: skewY(3deg);
+  transform-origin: top center;
+  box-shadow: 0 0 15px #0004;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  margin-top: 200px;
+}
+
+main > div {
+  margin: 60px;
+  padding-bottom: 10px;
+  transform: skewY(-3deg);
+}
+
+main > div h2:first-child {
+  margin-top: 10px;
+}
+
+main > div h2 {
+  font-weight: 400;
+  font-size: 24px;
+  position: relative;
+  left: -0.3em;
+  margin-bottom: 10px;
+  margin-top: 50px;
+}
+
+header {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr auto auto 1fr;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  height: 200px;
+  animation-name: show;
+  animation-duration: 300ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+header > h1 {
+  font-weight: 200;
+  font-size: 40px;
+  width: 0%;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  animation-name: show-logotype;
+  animation-duration: 300ms;
+  animation-delay: 50ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  overflow: hidden;
+}
+
+header img {
+  height: 70px;
+  margin-right: 15px;
+  grid-column: 2;
+}
+
+header > p {
+  color: #fff9;
+}
+
+body {
+  background: linear-gradient(135deg, #1a8561 0%, #1a8599 75%) fixed;
+}
+
+header * {
+  color: #fff;
+}
+
+footer {
+  grid-row: 3;
+  padding: 20px;
+  margin-top: 50px;
+}
+
+footer p {
+  margin: 0;
+  color: #fffc;
+}
+
+footer a {
+  color: #cfe;
+}
+
+li {
+  margin-bottom: 1em;
+}
+
+.fade-in{
+  opacity:0;
+  animation-duration: 300ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  animation-delay: 100ms;
+}
+
+.fade-in.shown{
+  animation-name: show-content;
+}
+
+@keyframes show {
+  from {
+    transform: translateY(-8px);
+    opacity: .0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes show-logotype {
+  from {
+    width:0%;
+  }
+
+  to {
+    width:100%;
+  }
+}
+
+@keyframes hide {
+  to {
+    transform: translateY(-16px);
+    opacity: .0;
+  }
+
+  from {
+    transform: translateY(0);
+    opacity: auto;
+  }
+}
+
+@keyframes show-content {
+  from {
+    transform: translateY(4px);
+    opacity: .0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
