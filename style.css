@@ -173,3 +173,15 @@ li {
     opacity: 1;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  *{
+    color:#eee;
+  }
+  main{
+    background:#333335cc;
+  }
+  a{
+    color: #6ad5b1;
+  }
+}
