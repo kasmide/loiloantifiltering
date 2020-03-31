@@ -122,7 +122,7 @@ li {
   animation-duration: 300ms;
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
-  animation-delay: 100ms;
+  animation-delay: 0ms;
 }
 
 .fade-in.shown{
