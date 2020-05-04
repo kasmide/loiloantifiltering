@@ -12,7 +12,9 @@ for (i = 2; process.argv.length > i; i++) {
       if (!isNaN(process.argv[i]) && Number(process.argv[i]) <= 65535 && Number(process.argv[i]) >= 0) {
         port = Number(process.argv[i])
       } else {
-        console.error("The given port number is not valid");
+        console.error(`The given port number "${process.argv[i]}" is invalid\nPort number must be in the range of 0 ~ 65535`);
+        process.exitCode = 1;
+        return;
       }
       break;
     case "--debug":
