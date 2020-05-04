@@ -87,6 +87,7 @@ header > h1 {
 
 header img {
   height: 70px;
+  width: 70px;
   margin-right: 15px;
   grid-column: 2;
 }
