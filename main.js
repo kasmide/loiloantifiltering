@@ -9,7 +9,7 @@ for (i = 2; process.argv.length > i; i++) {
     case "--port":
     case "-p":
       i++
-      if (!isNaN(process.argv[i])) {
+      if (!isNaN(process.argv[i]) && Number(process.argv[i]) <= 65535 && Number(process.argv[i]) >= 0) {
         port = Number(process.argv[i])
       } else {
         console.error("The given port number is not valid");
