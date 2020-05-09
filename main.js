@@ -1,10 +1,12 @@
+'use strict'
+
 const loiloAPIserver = "https://n.loilo.tv" //Change this if the server is on premise
 let port = 3000
 let isDebug = false;
 
 const http = require("http");
 const url = require("url");
-for (i = 2; process.argv.length > i; i++) {
+for (let i = 2; process.argv.length > i; i++) {
   switch (process.argv[i]) {
     case "--port":
     case "-p":
