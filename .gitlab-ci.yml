@@ -6,7 +6,7 @@ stages:
 test:
   image: alpine:latest
   services:
-    - ${CI_REGISTRY_IMAGE}:$CI_COMMIT_TAG
+    - ${CI_REGISTRY_IMAGE}:$CI_COMMIT_REF_NAME
   stage: test
   before_script:
     - apk add curl
@@ -45,8 +45,12 @@ docker:
     - docker login -u "_" -p $HEROKU_API_KEY registry.heroku.com
   script:
     - export CONTAINER_ID=$(docker build . -q)
-    - docker tag ${CONTAINER_ID} ${CI_REGISTRY_IMAGE}:latest
-    - docker push ${CI_REGISTRY_IMAGE}:latest
+    - >
+        if [[ $CI_COMMIT_TAG =~ '^v[[:digit:]]+\.[[:digit:]]+.*$' ]]
+        do
+          docker tag ${CONTAINER_ID} ${CI_REGISTRY_IMAGE}:latest
+          docker push ${CI_REGISTRY_IMAGE}:latest
+        done
     - docker tag ${CONTAINER_ID} ${CI_REGISTRY_IMAGE}:$CI_COMMIT_REF_NAME
     - docker push ${CI_REGISTRY_IMAGE}:$CI_COMMIT_REF_NAME
     - docker tag ${CONTAINER_ID} registry.heroku.com/$HEROKU_APPNAME/web:$CI_COMMIT_REF_NAME
