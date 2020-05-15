@@ -14,8 +14,8 @@ test:
     - "[ $(curl $(echo ${CI_REGISTRY_IMAGE}|sed s./.-.g):3000/api -w \"%{http_code}\" --retry 5 --retry-connrefused) = \"308\" ]"
     - "[ $(curl $(echo ${CI_REGISTRY_IMAGE}|sed s./.-.g):3000/api/web_filtering) = \"{\\\"type\\\":\\\"none\\\"}\" ]"
   rules:
-    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+.*$/
-      when: on_success
+    - exists:
+      - Dockerfile
 
 heroku:
   image: alpine:latest
@@ -47,13 +47,13 @@ docker:
     - export CONTAINER_ID=$(docker build . -q)
     - docker tag ${CONTAINER_ID} ${CI_REGISTRY_IMAGE}:latest
     - docker push ${CI_REGISTRY_IMAGE}:latest
-    - docker tag ${CONTAINER_ID} ${CI_REGISTRY_IMAGE}:$CI_COMMIT_TAG
-    - docker push ${CI_REGISTRY_IMAGE}:$CI_COMMIT_TAG
-    - docker tag ${CONTAINER_ID} registry.heroku.com/$HEROKU_APPNAME/web:$CI_COMMIT_TAG
-    - docker push registry.heroku.com/$HEROKU_APPNAME/web:$CI_COMMIT_TAG
+    - docker tag ${CONTAINER_ID} ${CI_REGISTRY_IMAGE}:$CI_COMMIT_REF_NAME
+    - docker push ${CI_REGISTRY_IMAGE}:$CI_COMMIT_REF_NAME
+    - docker tag ${CONTAINER_ID} registry.heroku.com/$HEROKU_APPNAME/web:$CI_COMMIT_REF_NAME
+    - docker push registry.heroku.com/$HEROKU_APPNAME/web:$CI_COMMIT_REF_NAME
   rules:
-    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+.*$/
-      when: always
+    - exists:
+      - Dockerfile
 
 npm:
   image: node:slim
