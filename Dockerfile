@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:current-buster-slim
 WORKDIR /usr/src/loiloantifiltering/
 COPY package*.json ./
 RUN npm i
