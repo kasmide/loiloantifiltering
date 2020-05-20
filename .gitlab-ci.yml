@@ -74,6 +74,7 @@ npm:
 include:
   - template: Container-Scanning.gitlab-ci.yml
   - template: Dependency-Scanning.gitlab-ci.yml
+  - template: Code-Quality.gitlab-ci.yml
 
 container_scanning:
   variables:
