@@ -34,8 +34,7 @@ for (let i = 2; process.argv.length > i; i++) {
       if (!isNaN(process.argv[i]) && Number(process.argv[i]) <= 65535 && Number(process.argv[i]) >= 0) {
         port = Number(process.argv[i])
       } else {
-        console.error(`The given port number "${process.argv[i]}" is invalid\nPort number must be in the range of 0 ~ 65535`);
-        process.exit(1);
+        throw new RangeError(`The given port number "${process.argv[i]}" is invalid\nPort number must be in the range of 0 ~ 65535`);
       }
       break;
     case "--debug":
