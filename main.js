@@ -35,8 +35,7 @@ for (let i = 2; process.argv.length > i; i++) {
         port = Number(process.argv[i])
       } else {
         console.error(`The given port number "${process.argv[i]}" is invalid\nPort number must be in the range of 0 ~ 65535`);
-        process.exitCode = 1;
-        return;
+        process.exit(1);
       }
       break;
     case "--debug":
