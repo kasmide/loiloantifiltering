@@ -21,6 +21,7 @@ test:
 heroku:
   image: alpine:latest
   stage: deploy
+  needs: ["docker","test"]
   before_script:
     - apk add jq curl
   script:
@@ -76,6 +77,7 @@ include:
   - template: Container-Scanning.gitlab-ci.yml
   - template: Dependency-Scanning.gitlab-ci.yml
   - template: Code-Quality.gitlab-ci.yml
+  - template: SAST.gitlab-ci.yml
 
 container_scanning:
   variables:
@@ -85,3 +87,13 @@ container_scanning:
     - exists:
       - Dockerfile
   needs: ["docker"]
+
+code_quality:
+  needs: []
+
+sast:
+  needs: []
+
+
+dependency_scanning:
+  needs: []
