@@ -8,6 +8,7 @@ test:
   services:
     - ${CI_REGISTRY_IMAGE}:$CI_COMMIT_REF_NAME
   stage: test
+  needs: ["docker"]
   before_script:
     - apk add curl
   script:
@@ -83,3 +84,4 @@ container_scanning:
   rules:
     - exists:
       - Dockerfile
+  needs: ["docker"]
