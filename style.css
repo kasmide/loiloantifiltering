@@ -31,8 +31,6 @@ main {
   transform: skewY(3deg);
   transform-origin: top center;
   box-shadow: 0 0 15px #0004;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   margin-top: 200px;
 }
 
