@@ -55,6 +55,11 @@ main > div h2 {
   margin-top: 50px;
 }
 
+main img{
+  width: 600px;
+  max-width: 100%;
+}
+
 header {
   margin: 0;
   display: grid;
