@@ -1,4 +1,4 @@
-#!/bin/env node
+#!/bin/env -S deno run --allow-net
 /*
 Copyright 2020 kasmide
 
@@ -24,17 +24,16 @@ const loiloAPIserver = "https://n.loilo.tv" //Change this if the server is on pr
 let port = 3000
 let isDebug = false;
 
-const http = require("http");
-const url = require("url");
-for (let i = 2; process.argv.length > i; i++) {
-  switch (process.argv[i]) {
+import { listenAndServe } from 'https://deno.land/std/http/server.ts';
+for (let i = 0; Deno.args.length > i; i++) {
+  switch (Deno.args[i]) {
     case "--port":
     case "-p":
       i++
-      if (!isNaN(process.argv[i]) && Number(process.argv[i]) <= 65535 && Number(process.argv[i]) >= 0) {
-        port = Number(process.argv[i])
+      if (!isNaN(Deno.args[i]) && Number(Deno.args[i]) <= 65535 && Number(Deno.args[i]) >= 0) {
+        port = Number(Deno.args[i])
       } else {
-        throw new RangeError(`The given port number "${process.argv[i]}" is invalid\nPort number must be in the range of 0 ~ 65535`);
+        throw new RangeError(`The given port number "${Deno.args[i]}" is invalid\nPort number must be in the range of 0 ~ 65535`);
       }
       break;
     case "--debug":
@@ -42,40 +41,44 @@ for (let i = 2; process.argv.length > i; i++) {
       console.log("Debug mode enabled")
       break;
     default:
-      console.error("Unkown parameter: %s", process.argv[i])
+      console.error("Unkown parameter: %s", Deno.args[i])
   }
 }
-
-http.createServer(function (req, res) {
-  const requestURL = loiloAPIserver + url.parse(req.url).path.substring(url.parse(req.url).pathname.indexOf("/api"));
-  req.on("data", function () {
-  })
-  req.on('end', function () {
-    if (isDebug) console.log("%s %s", req.method, requestURL)
-    switch (url.parse(requestURL).pathname) {
-      case "/":
-        res.writeHead(302, {
+listenAndServe({ port: port }, async function(req) {
+  if (isDebug) console.log("%s %s", req.method, req.url)
+  switch (req.url) {
+    case "/":
+      req.respond({
+        status: 302,
+        headers: new Headers({
           "Location": "https://kasmide.gitlab.io/loiloantifiltering/",
           "Cache-Control": "max-age=31536000",
           "Strict-Transport-Security": "max-age=31536000"
-        });
-        res.end();
-        break;
-      case "/api/web_filtering":
-        res.end('{"type":"none"}')
-        break;
-      case "/api/web_card/browsing_status":
-        res.end("{}");
-        break;
-      default:
-        res.writeHead(308, {
-          "Location": requestURL,
+        }),
+      });
+      break;
+    case "/api/web_filtering":
+      req.respond({
+        status: 200,
+        body: "{\"type\":\"none\"}",
+      });
+      break;
+    case "/api/web_card/browsing_status":
+      req.respond({
+        status: 200,
+        body: "{}",
+      });
+      break;
+    default:
+      req.respond({
+        status: 308,
+        headers: new Headers({
+          "Location": loiloAPIserver + req.url,
           "Cache-Control": "max-age=31536000",
           "Strict-Transport-Security": "max-age=31536000"
         })
-        res.end();
-        break;
-    }
-  })
-}).listen(port);
+      })
+      break;
+  }
+})
 console.log("Listen on 0.0.0.0:" + port);
