@@ -58,16 +58,10 @@ listenAndServe({ port: port }, async function(req) {
       });
       break;
     case "/api/web_filtering":
-      req.respond({
-        status: 200,
-        body: "{\"type\":\"none\"}",
-      });
+      req.respond({body: "{\"type\":\"none\"}"});
       break;
     case "/api/web_card/browsing_status":
-      req.respond({
-        status: 200,
-        body: "{}",
-      });
+      req.respond({body: "{}"});
       break;
     default:
       req.respond({
