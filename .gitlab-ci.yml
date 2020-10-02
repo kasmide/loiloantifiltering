@@ -6,7 +6,7 @@ stages:
 test:
   image: alpine:latest
   services:
-    - ${CI_REGISTRY_IMAGE}:$$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._]]*/_/g")
+    - ${CI_REGISTRY_IMAGE}:$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._-]]*/_/g")
   stage: test
   needs: ["docker"]
   before_script:
@@ -52,13 +52,26 @@ docker:
           docker tag ${CONTAINER_ID} ${CI_REGISTRY_IMAGE}:latest
           docker push ${CI_REGISTRY_IMAGE}:latest
         fi
-    - docker tag ${CONTAINER_ID} ${CI_REGISTRY_IMAGE}:$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._]]*/_/g")
-    - docker push ${CI_REGISTRY_IMAGE}:$$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._]]*/_/g")
-    - docker tag ${CONTAINER_ID} registry.heroku.com/$HEROKU_APPNAME/web:$$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._]]*/_/g")
-    - docker push registry.heroku.com/$HEROKU_APPNAME/web:$$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._]]*/_/g")
+    - docker tag ${CONTAINER_ID} ${CI_REGISTRY_IMAGE}:$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._-]]*/_/g")
+    - docker push ${CI_REGISTRY_IMAGE}:$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._-]]*/_/g")
+    - docker tag ${CONTAINER_ID} registry.heroku.com/$HEROKU_APPNAME/web:$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._-]]*/_/g")
+    - docker push registry.heroku.com/$HEROKU_APPNAME/web:$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._-]]*/_/g")
   rules:
     - exists:
       - Dockerfile
+
+npm:
+  image: node:slim
+  stage: build
+  before_script:
+    - npm config set registry https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
+    - npm version $CI_COMMIT_TAG
+  script:
+    - npm publish
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+.*$/ &&
+          $GITLAB_FEATURES =~ /\bpackages\b/
+      when: always
 
 include:
   - template: Container-Scanning.gitlab-ci.yml
@@ -69,7 +82,7 @@ include:
 container_scanning:
   variables:
     CI_APPLICATION_REPOSITORY: $CI_REGISTRY_IMAGE
-    CI_APPLICATION_TAG: $$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._]]*/_/g")
+    CI_APPLICATION_TAG: $(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._-]]*/_/g")
   rules:
     - exists:
       - Dockerfile
