@@ -82,7 +82,8 @@ include:
 container_scanning:
   variables:
     CI_APPLICATION_REPOSITORY: $CI_REGISTRY_IMAGE
-    CI_APPLICATION_TAG: $(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._-]]*/_/g")
+  before_script:
+    - export CI_APPLICATION_TAG=$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._-]]*/_/g")
   rules:
     - exists:
       - Dockerfile
