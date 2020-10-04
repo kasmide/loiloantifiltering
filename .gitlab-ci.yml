@@ -3,25 +3,10 @@ stages:
     - test
     - deploy
 
-test:
-  image: alpine:latest
-  services:
-    - ${CI_REGISTRY_IMAGE}:$(echo $CI_COMMIT_REF_NAME|sed "s/[^[A-Za-z0-9._-]]*/_/g")
-  stage: test
-  needs: ["docker"]
-  before_script:
-    - apk add curl
-  script:
-    - "[ $(curl $(echo ${CI_REGISTRY_IMAGE}|sed s./.-.g):3000/api -w \"%{http_code}\" --retry 5 --retry-connrefused) = \"308\" ]"
-    - "[ $(curl $(echo ${CI_REGISTRY_IMAGE}|sed s./.-.g):3000/api/web_filtering) = \"{\\\"type\\\":\\\"none\\\"}\" ]"
-  rules:
-    - exists:
-      - Dockerfile
-
 heroku:
   image: alpine:latest
   stage: deploy
-  needs: ["docker","test"]
+  needs: ["docker"]
   before_script:
     - apk add jq curl
   script:
