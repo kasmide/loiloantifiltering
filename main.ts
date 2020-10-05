@@ -46,7 +46,7 @@ for (let i = 0; Deno.args.length > i; i++) {
 }
 listenAndServe({ port: port }, async function(req) {
   if (isDebug) console.log("%s %s", req.method, req.url)
-  switch (req.url.substring(0,req.url.indexOf("?"))) {
+  switch (req.url.match(/[^?]*/)?.join()) {
     case "/":
       req.respond({
         status: 302,
