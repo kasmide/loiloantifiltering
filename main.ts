@@ -30,7 +30,7 @@ for (let i = 0; Deno.args.length > i; i++) {
     case "--port":
     case "-p":
       i++
-      if (!isNaN(Deno.args[i]) && Number(Deno.args[i]) <= 65535 && Number(Deno.args[i]) >= 0) {
+      if (!isNaN(Number(Deno.args[i])) && Number(Deno.args[i]) <= 65535 && Number(Deno.args[i]) >= 0) {
         port = Number(Deno.args[i])
       } else {
         throw new RangeError(`The given port number "${Deno.args[i]}" is invalid\nPort number must be in the range of 0 ~ 65535`);

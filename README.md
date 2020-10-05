@@ -8,7 +8,7 @@ I'm running public server here: <https://loilo.herokuapp.com/>
 Use public server above or:
 1. Download [Deno](https://deno.land/) from your distribution's package manager
 1.     $ git clone https://gitlab.com/kasmide/loiloantifiltering && cd loiloantifiltering
-1.     $ ./main.js
+1.     $ ./main.ts
 ### Options
 - `--port,-p [port number]` changes the port number to listen to
 - `--debug` enables debug mode
