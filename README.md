@@ -13,6 +13,6 @@ Use public server above or:
 - `--port,-p [port number]` changes the port number to listen to
 - `--debug` enables debug mode
 ## iOS App Setup
-**Warning**: You will be logged out during the steps, make sure to remember your user ID and password.
+**Warning**: You will be logged out in the steps, make sure to remember your user ID and password.
 1. Open "Settings" and go to LoiloNote School > Server URL
 1. Change the setting from `https://n.loilo.tv/` to `https://loilo.herokuapp.com/` or your local server address
