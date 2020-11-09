@@ -1,5 +1,5 @@
+Specifying hostnames other than n.loilo.tv to LoiloNote School's Server URL is no longer possible since LoiLoNote School v3.9.1, making this service not working anymore. (Specifying internal IP address works normally, so if you really want to bypass the filtering. You can build your own server)
 # LoiloAntiFiltering
-日本語の情報は [Wiki](https://gitlab.com/kasmide/loiloantifiltering/-/wikis/home) にあります。  
 This app allows you to bypass the web filtering of LoiloNote School for iOS, offering the internet without limitation.
 
 I'm running public server here: <https://loilo.herokuapp.com/>
